@@ -1,12 +1,4 @@
-// Require fs
-const fs = require("fs");
-// Require Inquirer
-const inquirer = require("inquirer");
-// Require Axios
-const axios = require("axios");
-
-createPage = (data, color) =>{
-return (`<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,20 +14,20 @@ return (`<!DOCTYPE html>
     <link rel = "stylesheet" href = "assets/style.css">  
 <title>GitHub User Profile PDF</title>
 </head>
-<body style="background-color:${color}">
+<body style="background-color:maroon">
     <div class="container justify-content-center">
         <div class="avatar justify-content-center">
-            <img src="${data.avatar_url}" id='avatarImg'/>
+            <img src="https://avatars2.githubusercontent.com/u/24556685?v=4" id='avatarImg'/>
         </div>
         <div class="container textContainer row justify-content-center">
             <span>
-                <h2 style="color:${color}">Hi!</h2>
-                <h3>My name is ${data.name}</h3>
-                <h5>Currently @ ${data.company}</h5>
-                <a href="https://www.google.com/maps/place/${data.location}"><i class="fas fa-location-arrow"></i><span class="location_link"> ${data.location}</span></a>
-                <a href="${data.html_url}"><span class="github_link"><i class="fab fa-github-alt"></i> Github</span></a>
-                <a href="${data.blog}"><span class="linkedin_link"><i class="fas fa-rss"></i> Blog</span></a>
-                <h5>${data.bio}</h5>
+                <h2 style="color:maroon">Hi!</h2>
+                <h3>My name is null</h3>
+                <h5>Currently @ null</h5>
+                <a href="https://www.google.com/maps/place/null"><i class="fas fa-location-arrow"></i><span class="location_link"> null</span></a>
+                <a href="https://github.com/Inbary"><span class="github_link"><i class="fab fa-github-alt"></i> Github</span></a>
+                <a href=""><span class="linkedin_link"><i class="fas fa-rss"></i> Blog</span></a>
+                <h5>null</h5>
             </span>
         </div>
     </div>
@@ -44,60 +36,25 @@ return (`<!DOCTYPE html>
         <div class="cards">
             <div class="row justify-content-center">
                 <div class="col card">
-                    <h4 style="color:${color}">Public Repos</h4>
-                    <h5>${data.public_repos}</h5>
+                    <h4 style="color:maroon">Public Repos</h4>
+                    <h5>0</h5>
                 </div>
                 <div class="col card">
-                    <h4 style="color:${color}">Followers</h4>
-                    <h5>${data.followers}</h5>
+                    <h4 style="color:maroon">Followers</h4>
+                    <h5>0</h5>
                 </div>
             </div>
             <div class="row justify-content-center">
                 <div class="col card">
-                    <h4 style="color:${color}">Following</h4>
-                    <h5>${data.following}</h5>
+                    <h4 style="color:maroon">Following</h4>
+                    <h5>0</h5>
                 </div>
                 <div class="col card">
-                    <h4 style="color:${color}">Stars</h4>
+                    <h4 style="color:maroon">Stars</h4>
                     <h5>0</h5>
                 </div>
             </div>
         </div>
     </div>
 </body>
-</html>`)
-}
-
-// Prompt User for questions:
-inquirer.prompt([
-    {
-        type: "input",
-        name: "color",
-        message: "What is your favorite color?"
-    },{
-        type: "input",
-        name: "githubUn",
-        message: "What is your GitHub username?"
-    }
-]).then(function({ githubUn, color }) {
-    const queryUrl = `https://api.github.com/users/${githubUn}`
-    axios.get(queryUrl).then(function(res) {
-        function white(){
-            if (color === "white"){
-                color = "black"
-            }
-        };
-        white();
-            fs.writeFile(res.data.login+".html", createPage(res.data, color), function(err) {
-                if (err) {
-                throw err;
-                }
-            console.log(res.data);
-            console.log(queryUrl);
-            return res.data;
-        })
-    });
-})
-
-
-
+</html>
