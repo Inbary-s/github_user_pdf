@@ -1,0 +1,72 @@
+body{
+    font-family: 'Darker Grotesque', sans-serif;
+    align-content: center;
+    color: white;
+}
+.avatar img{
+    border-radius: 100px;
+    width: 200px;
+    height: 200px;
+    border: solid 12px rgb(255, 255, 255);
+    -webkit-box-shadow: -12px 12px 12px 0px rgba(255,255,255,0.36), -6px 6px 6px 0px rgba(255, 255, 255, 0.603);
+-moz-box-shadow: -12px 12px 12px 0px rgba(255,255,255,0.36), -6px 6px 6px 0px rgba(255, 255, 255, 0.603);
+box-shadow: -12px 12px 12px 0px rgba(255,255,255,0.36), -6px 6px 6px 0px rgba(255, 255, 255, 0.603);
+    position: absolute;
+    z-index: 2;
+    left: 20%;
+}
+.container {
+    /* background-color: rgba(255, 255, 255, 0.5); */
+    /* padding: 50px; */
+    margin-top: 50px;
+    border-radius: 15px;
+    /* position: relative; */
+    top: 100px;
+    z-index: 0;
+}
+.textContainer {
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 40px;
+    /* margin-bottom: 20px; */
+    border-radius: 15px;
+    position: relative;
+    top: 100px;
+    z-index: 0;
+}
+.cardContainer {
+    position: relative;
+    top: 100px;
+    padding: 10px;
+    margin: 20px;
+    align-items: center;
+    width: 100%;
+}
+.card{
+    background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 90%);
+    margin: 20px;
+    padding: 40px;
+    height: 150px;
+    width: 200px;
+    border-radius: 15px;
+    border: none;
+}
+a {
+    color: white;
+    margin: 5%;
+}
+i{
+    padding-right: 5px;
+}
+h2 {
+    font-weight: 600;
+    padding-top: 50px;
+}
+h4{
+    font-weight: 600;
+    color: currentColor;
+}
+span{
+    width: 100%;
+    text-align: center;
+}
+
