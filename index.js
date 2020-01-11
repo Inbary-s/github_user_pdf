@@ -7,8 +7,13 @@ const axios = require("axios");
 // Require HTML/PDF
 const pdf = require("html-pdf");
 const awesome = require("@fortawesome/fontawesome-free")
+var starCount1;
 
-createPage = (data, color) =>{
+function setStarcount(starCount) {
+    starCount1 = starCount;
+}
+
+createPage = (data, color, starCount1) =>{
 return (`<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +30,6 @@ return (`<!DOCTYPE html>
   
     <title>GitHub User Profile PDF</title>
     <style>
-    
     body{
         font-family: 'Darker Grotesque', sans-serif;
         align-content: center;
@@ -70,7 +74,7 @@ return (`<!DOCTYPE html>
         width: 100%;
     }
     .card{
-        background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 90%);
+        background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%);
         margin: 20px;
         padding: 40px;
         height: 150px;
@@ -78,6 +82,18 @@ return (`<!DOCTYPE html>
         border-radius: 15px;
         border: none;
     }
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        grid-column-gap: 20px;
+        grid-row-gap: 20px;
+        align-content: center;
+        }
+    .pub { grid-area: 1 / 1 / 2 / 2; }
+    .followers { grid-area: 1 / 2 / 2 / 3; }
+    .following { grid-area: 2 / 1 / 3 / 3; }
+    .star { grid-area: 2 / 2 / 3 / 3; }
     a {
         color: white;
         margin: 5%;
@@ -94,8 +110,7 @@ return (`<!DOCTYPE html>
         color: currentColor;
     }
     span{width: 100%;
-        text-align: center;}
-        
+        text-align: center;}  
     </style>
 </head>
 <body style="background-color:${color}">
@@ -119,23 +134,23 @@ return (`<!DOCTYPE html>
     <div class="cardContainer">
         <div class="cards">
             <div class="row justify-content-center">
-                <div class="col card">
+                <div class="col card pub">
                     <h4 style="color:${color}">Public Repos</h4>
-                    <h5>${data.public_repos}</h5>
+                    <h5 style="color:${color}">${data.public_repos}</h5>
                 </div>
-                <div class="col card">
+                <div class="col card followers">
                     <h4 style="color:${color}">Followers</h4>
-                    <h5>${data.followers}</h5>
+                    <h5 style="color:${color}">${data.followers}</h5>
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col card">
+                <div class="col card following">
                     <h4 style="color:${color}">Following</h4>
-                    <h5>${data.following}</h5>
+                    <h5 style="color:${color}">${data.following}</h5>
                 </div>
-                <div class="col card">
+                <div class="col card star">
                     <h4 style="color:${color}">Stars</h4>
-                    <h5>0</h5>
+                    <h5 style="color:${color}">${data.starCount}</h5>
                 </div>
             </div>
         </div>
@@ -157,44 +172,30 @@ inquirer.prompt([
     }
 ]).then(function({ githubUn, color }) {
     const queryUrl = `https://api.github.com/users/${githubUn}`
-    axios.get(queryUrl).then(function(res) {
-        // function white(){
-        //     if (color === "white"){
-        //         color = "black"
-        //     }
-        // };
-        // white();
-        fs.writeFile(res.data.login+".html", createPage(res.data, (color==="white")? "black": color), function(err) {
-            console.log("write", res.data.login+".html")
-            if (err) {
-            throw err;
-            }
-        console.log(res.data);
-        console.log(queryUrl);
+    const queryUrlStar = `https://api.github.com/users/${githubUn}/starred`
+    axios.get(queryUrlStar).then(function(res1){
+        let starCount = res1.data.length;
+        // setStarcount(starCount);
+        axios.get(queryUrl).then(function(res) {
+            res.data.starCount = starCount;
+            fs.writeFile(res.data.login+".html", createPage(res.data, (color==="white")? "black": color), function(err) {
+                console.log("write", res.data.login+".html")
+                if (err) {
+                throw err;
+                }
+    });
         const options = { format: 'Letter', timeout: "100000" };
     const filename = "./" + res.data.login;
     console.log("read", filename)
     const html = fs.readFileSync(filename + ".html", 'utf8');
-    console.log(html)
 setTimeout(()=>{pdf.create(html, options).toFile(filename+'.pdf', function(err, res) {
   if (err) return console.log(err);
-  console.log(res); // { filename: '/app/businesscard.pdf' }
 });
         return res.data;
     }, 4000)
 })
 });
 });
-
-// function print(file) {
-//     const filename  = 'testOutput.pdf';
-
-//     html2canvas(file).then(canvas => {
-//         let pdf = new jsPDF('p', 'mm', 'a4');
-//         pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 211, 298);
-//         pdf.save(filename);
-//     });
-// }
 
 
 
