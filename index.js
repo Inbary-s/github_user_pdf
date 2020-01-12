@@ -13,8 +13,8 @@ function setStarcount(starCount) {
     starCount1 = starCount;
 }
 
-createPage = (data, color, starCount1) =>{
-return (`<!DOCTYPE html>
+createPage = (data, color, starCount1) => {
+    return (`<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -129,8 +129,7 @@ return (`<!DOCTYPE html>
                 <h5>${data.bio}</h5>
             </span>
         </div>
-    </div>
-    
+    </div>  
     <div class="cardContainer">
         <div class="cards">
             <div class="row justify-content-center">
@@ -158,43 +157,34 @@ return (`<!DOCTYPE html>
 </body>
 </html>`)
 }
-
 // Prompt User for questions:
 inquirer.prompt([
     {
         type: "input",
         name: "color",
         message: "What is your favorite color?"
-    },{
+    }, {
         type: "input",
         name: "githubUn",
         message: "What is your GitHub username?"
     }
-]).then(function({ githubUn, color }) {
+]).then(function ({ githubUn, color }) {
     const queryUrl = `https://api.github.com/users/${githubUn}`
     const queryUrlStar = `https://api.github.com/users/${githubUn}/starred`
-    axios.get(queryUrlStar).then(function(res1){
+    axios.get(queryUrlStar).then(function (res1) {
         let starCount = res1.data.length;
-        // setStarcount(starCount);
-        axios.get(queryUrl).then(function(res) {
+        axios.get(queryUrl).then(function (res) {
             res.data.starCount = starCount;
-            fs.writeFile(res.data.login+".html", createPage(res.data, (color==="white")? "black": color), function(err) {
-                console.log("write", res.data.login+".html")
-                if (err) {
-                throw err;
-                }
+            fs.writeFileSync(res.data.login + ".html", createPage(res.data, (color === "white") ? "black" : color));
+            const options = { format: 'Letter', timeout: 30000 };
+            const filename = "./" + res.data.login;
+            const html = fs.readFileSync(filename + ".html", "utf8");
+            pdf.create(html, options).toFile(filename + ".pdf", function (err, res) {
+                if (err) return console.log(err);
+                console.log("Success!!! Here is your file, make sure to check the HTML version as well!  " + res.filename);
+            });
+        })
     });
-        const options = { format: 'Letter', timeout: "100000" };
-    const filename = "./" + res.data.login;
-    console.log("read", filename)
-    const html = fs.readFileSync(filename + ".html", 'utf8');
-setTimeout(()=>{pdf.create(html, options).toFile(filename+'.pdf', function(err, res) {
-  if (err) return console.log(err);
-});
-        return res.data;
-    }, 4000)
-})
-});
 });
 
 
