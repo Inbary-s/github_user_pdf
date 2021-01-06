@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/Inbary-s/github_user_pdf#readme",
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bootstrap": "^4.4.1",
     "html-pdf": "^2.2.0",
     "html2canvas": "^1.0.0-rc.5",
